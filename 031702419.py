@@ -129,7 +129,7 @@ def main():
         addrlist.append(doornum)
         addrlist.append(nows)
     dict["地址"] = addrlist
-    print(dict)
+
 
     print(json.dumps(dict))
 main()
