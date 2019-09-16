@@ -89,10 +89,13 @@ else:
     nows = nows.replace(province,"",1)
 
 city = getCity(nows)
+
 if city != "":
-    nows = nows.replace(city, "", 1);
-    if city[-1] != "市" and city[-1] != "州":
+    nows = nows.replace(city, "", 1)
+    if (city[-1] != "市") and (city[-3:-1] != "自治"):
+        #print(city[-3:-1])
         city = city+"市"
+        #print(city)
 
 
 county = getCounty(nows)
@@ -133,7 +136,7 @@ else:
     addrlist.append(nows)
 dict["地址"] = addrlist
 
-
+#print(dict)
 print(json.dumps(dict))
 
 
