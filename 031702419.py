@@ -61,81 +61,82 @@ def getDoornum(s):
         return ""
     return res.group(0)
 
-def main():
-    s = input()
-    a = s[0]
-    s = s[2:]
-    result = s.split(",")
-    name = result[0];
-    nows = result[1];
-    telnum= getTelNum(nows);
-    nows = nows.replace(telnum, "", 1);
-    nows = nows.replace(".", "", 1);
 
-    province = getProvince(nows);
-    if province == "北京" or province == "上海" or province == "天津" or province == "重庆":
-        province = province
-        nows = nows.replace(province,province+"市",1)
-    elif province == "北京市" or province == "上海市" or province == "天津市" or province == "重庆市":
-        province = province[0:2]
-    elif province[-1] != "省" and province[-1] != "区":           #province = 黑龙江 福建
-        nows = nows.replace(province,"",1)
-        province = province + "省"
+s = input()
+a = s[0]
+s = s[2:]
+result = s.split(",")
+name = result[0];
+nows = result[1];
+telnum= getTelNum(nows);
+nows = nows.replace(telnum, "", 1);
+nows = nows.replace(".", "", 1);
+
+province = getProvince(nows);
+if province == "北京" or province == "上海" or province == "天津" or province == "重庆":
+    province = province
+    nows = nows.replace(province,province+"市",1)
+elif province == "北京市" or province == "上海市" or province == "天津市" or province == "重庆市":
+    province = province[0:2]
+elif province[-1] != "省" and province[-1] != "区":           #province = 黑龙江 福建
+    nows = nows.replace(province,"",1)
+    province = province + "省"
+else:
+    nows = nows.replace(province,"",1)
+
+city = getCity(nows)
+if city != "":
+    nows = nows.replace(city, "", 1);
+    if city[-1] != "市" and city[-1] != "州":
+        city = city+"市"
+
+
+county = getCounty(nows)
+if county != "":
+    l = len(county)
+    if(county[-1]==nows[l-1]):
+        nows = nows.replace(county, "", 1);
     else:
-        nows = nows.replace(province,"",1)
+        nows = nows.replace(county[:-1], "", 1);
+        #print(county[:-1])
 
-    city = getCity(nows)
-    if city != "":
-        nows = nows.replace(city, "", 1);
-        if city[-1] != "市" and city[-1] != "州":
-            city = city+"市"
+town = getTown(nows)
+nows = nows.replace(town, "", 1);
+detailaddr = nows
 
+road = getRoad(nows)
+nows = nows.replace(road, "", 1);
 
-    county = getCounty(nows)
-    if county != "":
-        l = len(county)
-        if(county[-1]==nows[l-1]):
-            nows = nows.replace(county, "", 1);
-        else:
-            nows = nows.replace(county[:-1], "", 1);
-            #print(county[:-1])
+doornum = getDoornum(nows)
+nows = nows.replace(doornum, "", 1);
 
-    town = getTown(nows)
-    nows = nows.replace(town, "", 1);
-    detailaddr = nows
-
-    road = getRoad(nows)
-    nows = nows.replace(road, "", 1);
-
-    doornum = getDoornum(nows)
-    nows = nows.replace(doornum, "", 1);
-
-    dict = {}
-    dict["姓名"] = name
-    dict["手机"] = telnum
-    addrlist = []
-    if a == '1':
-        addrlist.append(province)
-        addrlist.append(city)
-        addrlist.append(county)
-        addrlist.append(town)
-        addrlist.append(detailaddr)
-    else:
-        addrlist.append(province)
-        addrlist.append(city)
-        addrlist.append(county)
-        addrlist.append(town)
-        addrlist.append(road)
-        addrlist.append(doornum)
-        addrlist.append(nows)
-    dict["地址"] = addrlist
+dict = {}
+dict["姓名"] = name
+dict["手机"] = telnum
+addrlist = []
+if a == '1':
+    addrlist.append(province)
+    addrlist.append(city)
+    addrlist.append(county)
+    addrlist.append(town)
+    addrlist.append(detailaddr)
+else:
+    addrlist.append(province)
+    addrlist.append(city)
+    addrlist.append(county)
+    addrlist.append(town)
+    addrlist.append(road)
+    addrlist.append(doornum)
+    addrlist.append(nows)
+dict["地址"] = addrlist
 
 
-    print(json.dumps(dict))
-main()
+print(json.dumps(dict))
 
 
 
 
 
 
+
+#1!李四,福建闽侯13756899511鼓西街道湖滨路110号湖滨大厦一层.
