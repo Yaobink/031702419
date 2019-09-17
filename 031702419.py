@@ -15,6 +15,8 @@ def getprovince(s):      ##获得省
     if res == None or l > 5:
         if s[0:3] == "黑龙江":
             return "黑龙江"
+        if s[0:3] == "内蒙古":
+            return "内蒙古"
         else:
             return s[0:2]
     return res.group(0)
@@ -32,7 +34,7 @@ def getcity(s):            #获得城镇
 
 def getcounty(s):            #获得县
     #print(s)
-    res = re.search("(.*?自治旗)|(.*?[县区市])", s)
+    res = re.search("(.*?自治旗)|(.*?[县区市旗])", s)
     if res == None:
         #print("_____________________")
         for i in AREAS:
@@ -80,6 +82,21 @@ if PROVINCE in ('北京', '上海', '天津', '重庆'):
     NOWS = NOWS.replace(PROVINCE, PROVINCE + "市", 1)
 elif PROVINCE in ('北京市', '上海市', '天津市', '重庆市'):
     PROVINCE = PROVINCE[0:2]
+elif PROVINCE == "广西":
+    NOWS = NOWS.replace(PROVINCE, "", 1)
+    PROVINCE = PROVINCE + "壮族自治区"
+elif PROVINCE == "新疆":
+    NOWS = NOWS.replace(PROVINCE, "", 1)
+    PROVINCE = PROVINCE + "维吾尔自治区"
+elif PROVINCE == "宁夏":
+    NOWS = NOWS.replace(PROVINCE, "", 1)
+    PROVINCE = PROVINCE + "回族自治区"
+elif PROVINCE == "内蒙古":
+    NOWS = NOWS.replace(PROVINCE , "", 1)
+    PROVINCE = PROVINCE + "自治区"
+elif PROVINCE == "西藏":
+    NOWS = NOWS.replace(PROVINCE, "", 1)
+    PROVINCE = PROVINCE + "自治区"
 elif PROVINCE[-1] != "省" and PROVINCE[-1] != "区":           #province = 黑龙江 福建
     NOWS = NOWS.replace(PROVINCE, "", 1)
     PROVINCE = PROVINCE + "省"
