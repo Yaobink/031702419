@@ -1,38 +1,36 @@
 # -*- coding: utf-8 -*-
-import os
-import sys
 import json
 import re
 
-def getTelNum(s):
-    res = re.search(r'\d{11}',s)
+def gettelnum(s):
+    res = re.search (r'\d{11}', s )
     if res == None:
         return ""
     return res.group(0)
 
-def getProvince(s):
-    res = re.search(("(.*?省)|(.*?自治区)|上海市|北京市|天津市|重庆市"),s)
-    if(res != None):
+def getprovince(s):
+    res = re.search(("(.*?省)|(.*?自治区)|上海市|北京市|天津市|重庆市"), s)
+    if res != None:
         l = len(res.group(0))
-    if res == None or l>5:
+    if res == None or l > 5:
         if s[0:3] == "黑龙江":
             return "黑龙江"
         else:
             return s[0:2]
     return res.group(0)
 
-def getCity(s):
+def getcity(s):
     res = re.search("(.*?自治州)|(.*?[市])", s)
-    if res != None :
+    if res != None:
         l = len(res.group(0))
-    if res == None or l>7:
+    if res == None or l > 7:
         for i in cities:
             if s[0:2] in i:
                 return i
         return ""
     return res.group(0)
 
-def getCounty(s):
+def getcounty(s):
     #print(s)
     res = re.search("(.*?自治旗)|(.*?[县区市])", s)
     if res == None:
@@ -43,19 +41,19 @@ def getCounty(s):
         return ""
     return res.group(0)
 
-def getTown(s):
+def gettown(s):
     res = re.search("(.*?街道)|(.*?[镇乡])", s)
     if res == None:
         return ""
     return res.group(0)
 
-def getRoad(s):
+def getroad(s):
     res = re.search("(.*?[路街巷道])", s)
     if res == None:
         return ""
     return res.group(0)
 
-def getDoornum(s):
+def getdoornum(s):
     res = re.search("(.*?[号])", s)
     if res == None:
         return ""
@@ -70,25 +68,25 @@ s = input()
 a = s[0]
 s = s[2:]
 result = s.split(",")
-name = result[0];
-nows = result[1];
-telnum = getTelNum(nows);
-nows = nows.replace(telnum, "", 1);
-nows = nows.replace(".", "", 1);
+name = result[0]
+nows = result[1]
+telnum = gettelnum(nows)
+nows = nows.replace(telnum, "", 1)
+nows = nows.replace(".", "", 1)
 
-province = getProvince(nows);
+province = getprovince(nows)
 if province == "北京" or province == "上海" or province == "天津" or province == "重庆":
     province = province
-    nows = nows.replace(province,province+"市",1)
+    nows = nows.replace(province, province + "市", 1)
 elif province == "北京市" or province == "上海市" or province == "天津市" or province == "重庆市":
     province = province[0:2]
 elif province[-1] != "省" and province[-1] != "区":           #province = 黑龙江 福建
-    nows = nows.replace(province,"",1)
+    nows = nows.replace(province, "", 1)
     province = province + "省"
 else:
-    nows = nows.replace(province,"",1)
+    nows = nows.replace(province, "", 1)
 
-city = getCity(nows)
+city = getcity(nows)
 
 if city != "":
     nows = nows.replace(city, "", 1)
@@ -98,23 +96,23 @@ if city != "":
         #print(city)
 
 
-county = getCounty(nows)
+county = getcounty(nows)
 if county != "":
     l = len(county)
-    if(county[-1]==nows[l-1]):
-        nows = nows.replace(county, "", 1);
+    if county[-1] == nows[l-1]:
+        nows = nows.replace(county, "", 1)
     else:
-        nows = nows.replace(county[:-1], "", 1);
+        nows = nows.replace(county[:-1], "", 1)
         #print(county[:-1])
-town = getTown(nows)
-nows = nows.replace(town, "", 1);
+town = gettown(nows)
+nows = nows.replace(town, "", 1)
 detailaddr = nows
 
-road = getRoad(nows)
-nows = nows.replace(road, "", 1);
+road = getroad(nows)
+nows = nows.replace(road, "", 1)
 
-doornum = getDoornum(nows)
-nows = nows.replace(doornum, "", 1);
+doornum = getdoornum(nows)
+nows = nows.replace(doornum, "", 1)
 
 dict = {}
 dict["姓名"] = name
