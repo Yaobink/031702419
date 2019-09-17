@@ -136,8 +136,3 @@ DICT["地址"] = ADDRLIST
 
 #print(DICT)
 print(json.dumps(DICT))
-
-
-
-
-
